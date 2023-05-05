@@ -9,7 +9,8 @@ LABELS = (
     ('default','Default')
 )
 
-STOCK= (
+
+STOCK=(
     ('in_stock','In Stock'),
     ('out_stock','Out of stock')
 )
