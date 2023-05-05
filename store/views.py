@@ -32,4 +32,5 @@ class ContactView(BaseView):
         self.view
         return render(request,'contact.html',self.view)
 
-    
+
+

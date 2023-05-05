@@ -8,10 +8,12 @@ LABELS = (
     ('default','Default')
 )
 
-STOCK= (
+
+STOCK=(
     ('in_stock','In Stock'),
     ('out_stock','Out of stock')
 )
+
 class Department(models.Model):
     slug = models.CharField(max_length=200,unique=True)
     dept_name = models.CharField(max_length=200,unique=True)
