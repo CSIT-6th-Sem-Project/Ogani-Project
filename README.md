@@ -5,4 +5,5 @@
 + Software Engineering 
 
 ## Preview
+![Alt text](https://github.com/CSIT-6th-Sem-Project/Ogani-Project/blob/main/static/img/ogani-free-template.jpg.webp)
 
