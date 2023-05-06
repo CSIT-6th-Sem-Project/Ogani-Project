@@ -1,2 +1,8 @@
-# Ogani-Project
-## Bsc.CSIT 6th Sem E-Commerce, E-Governance and Software Engineering Project on an Organic Food Items E-Commerce Market Platform
+# Ogani-Project ( *An Organic Food Products E-Commerce Market Platform* )
+## Bsc.CSIT 6th Sem Project for:
++ E-Commerce
++ E-Governance
++ Software Engineering 
+
+## Preview
+
