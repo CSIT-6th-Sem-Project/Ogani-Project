@@ -16,7 +16,7 @@ STOCK=(
 )
 
 class BaseModel(models.Model):
-    slug = models.CharField(max_length=200,unique=True)
+    slug = models.SlugField(max_length=200,unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
@@ -25,19 +25,26 @@ class BaseModel(models.Model):
 
 class Department(BaseModel):
     dept_name = models.CharField(max_length=200,unique=True)
+    image = models.ImageField(upload_to="department",null=True)
 
     def __str__(self):
         return f"<{self.dept_name}>"
 
+    class Meta:
+        ordering = ['dept_name']
+
 class Category(BaseModel):
     cname = models.CharField(max_length=200)
     dept = models.ForeignKey(Department,on_delete=models.CASCADE)
+    image = models.ImageField(null=True,upload_to="categories")
 
+    def __str__(self):
+        return f"<{self.cname}>"
 
-class Products(BaseModel):
+class Product(BaseModel):
     name = models.CharField(max_length=200)
     price = models.FloatField()
-    picture = models.ImageField(upload_to='media/products')
+    picture = models.ImageField(upload_to='products')
     description = models.TextField()
     information = models.TextField()
     weight = models.FloatField()
@@ -45,6 +52,7 @@ class Products(BaseModel):
     department = models.ForeignKey(Department,on_delete=models.DO_NOTHING)
     category = models.ForeignKey(Category,on_delete=models.DO_NOTHING)
     discount = models.FloatField(default=0.0)
+    rating = models.FloatField(default=0)
 
 
 
@@ -54,7 +62,7 @@ class Products(BaseModel):
 
 class Cart(BaseModel):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    product = models.ForeignKey(Products, on_delete=models.DO_NOTHING)
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     total = models.FloatField()
     quantity = models.IntegerField()
     checkout = models.BooleanField(default=False)
@@ -66,7 +74,7 @@ class Cart(BaseModel):
 
 class Wishlist(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
-    items = models.ForeignKey(Products , on_delete = models.CASCADE)
+    items = models.ForeignKey(Product , on_delete = models.CASCADE)
     price = models.IntegerField()
 
     def __str__(self):
@@ -91,7 +99,7 @@ class Blog(BaseModel):
     title = models.CharField(max_length=600)
     description = models.TextField()
     content = models.TextField()
-    image = models.ImageField(upload_to='media/blog')
+    image = models.ImageField(upload_to='blog')
     likes = models.IntegerField()
 
 
