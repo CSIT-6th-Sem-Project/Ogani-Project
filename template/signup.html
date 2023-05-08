@@ -1,55 +1,76 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-        <!-- Signup Start -->
-        <div class="login">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <form method="POST">
-                            {% csrf_token %}
-                            {% for message in messages %}
-                           <font color="red"> <center>{{message}}</center></font>
-                            {% endfor %}
-                        <div class="register-form">
-                            <div class="row">
-                                 <div class="col-md-6">
-                                    <label>First name</label>
-                                    <input class="form-control" name="first_name" type="text" placeholder="First name">
-                                </div>
-                                 <div class="col-md-6">
-                                    <label>Last name</label>
-                                    <input class="form-control" name="last_name" type="text" placeholder="Last name">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Username</label>
-                                    <input class="form-control" name="username" type="text" placeholder="Username">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>E-mail</label>
-                                    <input class="form-control" name="email" type="text" placeholder="E-mail">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Mobile No</label>
-                                    <input class="form-control" name="phone" type="text" placeholder="Mobile No">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Password</label>
-                                    <input class="form-control" name="password" type="password" placeholder="Password">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Retype Password</label>
-                                    <input class="form-control" name="cpassword" type="password" placeholder="Password">
-                                </div>
-                                <div class="col-md-12">
-                                    <button class="btn btn-outline-success" type="submit">Submit</button>
-                                </div>
-                            </div>
+         <!-- Breadcrumb Section Begin -->
+        <section class="breadcrumb-section set-bg" data-setbg="{% static 'img/breadcrumb.jpg' %}">
+            <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Signup</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Home</a>
+                            <span>Signup</span>
                         </div>
-                            </form>
                     </div>
                 </div>
             </div>
+        </div>
+        </section>
+        <!-- Breadcrumb Section End -->
+        <!-- Signup Start -->
+        <div class="signup spad">
+            <div class="m-2 text-center ">
+                    <h2 class="text-success">Join Us Today</h2>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+            <div class="d-flex justify-content-center p-4 m-2">
+                <div class="row shadow-sm p-2">
+                        {% for message in messages %}
+                            <div class = "col-lg-12 col-md-6 p-2">
+                            <div class="alert {{message.tags}} alert-dismissible"  role="alert">
+
+                            <img type="image/svg" src="{% static 'img/icon-no.svg' %}" />
+
+                            <small> {{message}}</small>
+                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        	                            <span aria-hidden="true">&times</span>
+    	                            </button>
+                            </div>
+                           </div>
+                        {% endfor %}
+<!--                   <div class="col-lg-12 col-md-8">-->
+                       <div class="col-lg-6">
+                        <input class="form-control" name="first_name" type="text" placeholder="firstname">
+                       </div>
+                       <div class="col-lg-6">
+                            <input class="form-control" name="last_name" type="text" placeholder="lastname">
+                       </div>
+                        <div class="col-lg-12 mt-2 mb-2">
+                            <input class="form-control" name="username" type="text" placeholder="username">
+                        </div>
+                       <div class="col-lg-12">
+                            <input class="form-control" name="email" type="email" placeholder="email">
+                       </div>
+                         <div class="col-lg-12 mt-2 mb-2">
+                            <input class="form-control" name="password" type="password" placeholder="password">
+                        </div>
+                        <div class="col-lg-12 mt-2 mb-2">
+                            <input class="form-control" name="cpassword" type="password" placeholder="confirm password">
+                        </div>
+                     <div class="col-lg-12 mt-2 mb-2">
+                        <button type="submit" class="btn btn-outline-success" > Register</button>
+                     </div>
+
+                     <div class="col-lg-12 mt-2 mb-2">
+                         <span class="text text-secondary"> Already a member ?</span>
+                         <small><a href="/login" class="text text-success"> login</a></small>
+                     </div>
+<!--                   </div>-->
+                </div>
+            </div>
+            </form>
         </div>
         <!-- Signup End -->
 {% endblock %}

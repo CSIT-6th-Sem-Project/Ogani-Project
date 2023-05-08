@@ -42,39 +42,37 @@ class WishListView(BaseView):
         return render(request,'shopping-wishlist.html',self.view)
 
 
+
 def signup(request):
     if request.method == 'POST':
-        first_name = request.POST['first_name'],
-        last_name = request.POST['last_name'],
-        username = request.POST['username'],
-        phone = request.POST['phone'],
-        email = request.POST['email'],
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['username']
+        email = request.POST['email']
         password = request.POST['password']
         cpassword = request.POST['cpassword']
         if password == cpassword:
             if User.objects.filter(username = username).exists():
                 messages.error(request,'The username is already taken')
                 return redirect('/signup')
-            elif User.objects.filter(phone = phone).exists():
-                messages.error(request,'The phone number already exists')
-                return redirect('/signup')
             elif User.objects.filter(email = email).exists():
                 messages.error(request,'The email already exists')
                 return redirect('/signup')
-
             else:
-                data = User.objects.create(
+                data = User.objects.create_user(
                     first_name = first_name,
                     last_name = last_name,
                     username = username,
-                    phone  = phone,
                     email = email,
                     password = password
                 )
                 data.save()
+                messages.success(request,"Registered Successfully !!")
+                return redirect('/login')
         else:
             messages.error(request,'The password does not match')
             return redirect('/signup')
-
-    return render(request,'signup.html')
+    view = BaseView.view
+    view['Title'] = 'Signup'
+    return render(request,'signup.html',view)
 
