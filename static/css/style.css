@@ -1971,6 +1971,10 @@ ol {
 	width: 15px;
 }
 
+.shoping__cart__image{
+    width: 100px;
+    height: 100px;
+}
 .primary-btn.cart-btn {
 	color: #6f6f6f;
 	padding: 14px 30px 12px;

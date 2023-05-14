@@ -38,7 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'store'
+    # Main Store App
+    'store',
+    # User Account Settings App
+    'account_settings',
+    # Blog App
+    'blog_app'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +61,7 @@ ROOT_URLCONF = 'Organi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['template'],
+        'DIRS': ['store/template','base_template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
