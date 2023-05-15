@@ -1,0 +1,16 @@
+<!--            Pagination Starts-->
+<!--            <div class="row">-->
+                {% block pagination %}
+                <nav aria-label="Page navigation example md-4">
+                    <ul class="pagination justify-content-center">
+                        {% for page_number in page_obj.paginator.get_elided_page_range %}
+                        {% if page_number == page_obj.paginator.ELLIPSIS %}
+                        {{page_number}}
+                        {% else %}
+                        <li class="page-item ml-2"><a class="page-link" href="/cart?page={{page_number}}">{{page_number}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </nav>
+                {% endblock %}
+<!--            </div>-->

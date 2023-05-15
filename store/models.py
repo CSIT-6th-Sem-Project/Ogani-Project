@@ -74,10 +74,14 @@ class Product(BaseModel):
         if(self.discount > 0.0):
             price = self.price - (self.discount/100) * self.price
             return price
+        else:
+            return self.price
 
     def save(self, *args, **kwargs):  # new
+        rand = os.urandom(12)
+        rand = hexlify(rand)
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.name+" "+rand.decode())
         return super(Product,self).save(*args, **kwargs)
 
 
@@ -104,24 +108,30 @@ class Cart(BaseModel):
             self.slug = slugify(self.user.username+" "+rand.decode())
 
         if self.quantity > 1:
-            self.total = self.total * self.quantity
+            self.total = self.product.discounted_price * self.quantity
+
 
         return super(Cart,self).save(*args, **kwargs)
 
 
-class Wishlist(models.Model):
+class Wishlist(BaseModel):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     items = models.ForeignKey(Product , on_delete = models.CASCADE)
-    price = models.IntegerField()
+    quantity = models.IntegerField(default=1)
+    total = models.FloatField()
 
     def __str__(self):
-        return f"< {self.user.username}  : {self.items.pname} >"
+        return f"< {self.user.username}  : {self.items.name} >"
 
     def save(self, *args, **kwargs):  # new
         if not self.slug:
             rand = os.urandom(32)
             rand = hexlify(rand)
             self.slug = slugify(self.user.username + " " + rand.decode())
+
+        if self.quantity > 1:
+            self.total = self.items.discounted_price * self.quantity
+
         return super(Wishlist,self).save(*args, **kwargs)
 
 
