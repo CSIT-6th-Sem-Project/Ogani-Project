@@ -1,7 +1,17 @@
     {% extends 'base.html' %}
     {% load static %}
     {% block title %} Home {% endblock %}
+    {%  block ads %}
+    <div class="hero__item set-bg mt-2" data-setbg="{% static 'img/hero/banner.jpg' %}">
+                    <div class="hero__text">
+                        <span>FRESH PRODUCTS</span>
+                        <h2>Everything <br/>100% Organic</h2>
+                        <p>Free Pickup and Delivery Available</p>
+                        <a href="#" class="primary-btn">SHOP NOW</a>
+                    </div>
+                </div> {% endblock %}
     {% block content %}
+
     <!-- Categories Section Begin -->
     <section class="categories">
         <div class="container">
@@ -10,30 +20,11 @@
                     {% for department in Departments %}
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{{department.image}}">
+
                             <h5><a href="#">{{department.dept_name}}</a></h5>
                         </div>
                     </div>
                     {% endfor %}
-<!--                    <div class="col-lg-3">-->
-<!--                        <div class="categories__item set-bg" data-setbg="img/categories/cat-2.jpg">-->
-<!--                            <h5><a href="#">Dried Fruit</a></h5>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-lg-3">-->
-<!--                        <div class="categories__item set-bg" data-setbg="img/categories/cat-3.jpg">-->
-<!--                            <h5><a href="#">Vegetables</a></h5>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-lg-3">-->
-<!--                        <div class="categories__item set-bg" data-setbg="img/categories/cat-4.jpg">-->
-<!--                            <h5><a href="#">drink fruits</a></h5>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-lg-3">-->
-<!--                        <div class="categories__item set-bg" data-setbg="img/categories/cat-5.jpg">-->
-<!--                            <h5><a href="#">drink fruits</a></h5>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -63,22 +54,31 @@
                 {% for category,featured_products in Featured_Products.items %}
                 {% for product in featured_products %}
                 <div class='col-lg-3 col-md-4 col-sm-6 mix {{category|cut:" "}}'>
-                    <div class="featured__item">
+                    <div class="featured__item" onclick="location.href='{% url 'product_detail' product.slug %}'">
                         <div class="featured__item__pic set-bg" data-setbg="{{product.picture.url}}">
+                            {% if product.discount > 0 %}
+                            <div class="featured__discount__percent">-{{product.discount}}%</div>
+                            {% endif %}
                             <ul class="featured__item__pic__hover">
-                                {% if product.slug not in Wishlist %}
-                                    <li><a href="{% url 'add_to_wishlist' product.slug %}"><i class="fa fa-heart" ></i></a></li>
-                                {% else %}
-                                    <li><a href="#"><i class="fa fa-heart" style="color:red;"></i></a></li>
-                                {% endif %}
+
+                                    {% if product.slug in request.session.wishlist.values and request.user.is_authenticated %}
+                                        <li><a href="{% url 'remove_wishlist' product.slug %}"><i class="fa fa-heart" style="color:red;"></i></a></li>
+                                    {% else %}
+                                        <li><a href="{% url 'add_to_wishlist' product.slug %}"><i class="fa fa-heart" ></i></a></li>
+                                    {% endif %}
 
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="{% url 'add_to_cart' product.slug %} "><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
                             <h6><a href="#">{{product.name}}</a></h6>
-                            <h5>${{product.price}}</h5>
+                            {% if product.discount > 0 %}
+                                <s class="text-muted">Rs.{{product.price}}</s>
+                                <h5>Rs.{{product.discounted_price}}</h5>
+                            {% else %}
+                                <h5>Rs.{{product.price}}</h5>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -95,12 +95,12 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="banner__pic">
-                        <img src="img/banner/banner-1.jpg" alt="">
+                        <img src="{% static 'img/banner/banner-1.jpg' %}" alt="">
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="banner__pic">
-                        <img src="img/banner/banner-2.jpg" alt="">
+                        <img src="{% static 'img/banner/banner-2.jpg' %}" alt="">
                     </div>
                 </div>
             </div>
@@ -119,13 +119,13 @@
                             {% for products in Latest_Products %}
                             <div class="latest-prdouct__slider__item">
                                 {% for product in products %}
-                                <a href="#" class="latest-product__item">
+                                <a href="{% url 'product_detail' product.slug %}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
                                         <img src="{{product.picture.url}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{product.name}}</h6>
-                                        <span>${{product.price}}</span>
+                                        <span>${{product.discounted_price}}</span>
                                     </div>
                                 </a>
                                 {% endfor %}
@@ -148,7 +148,7 @@
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{product.name}}</h6>
-                                        <span>${{product.price}}</span>
+                                        <span>${{product.discounted_price}}</span>
                                     </div>
                                 </a>
                                 {% endfor %}
@@ -167,11 +167,12 @@
                                 {% for product in products %}
                                 <a href="#" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{product.image.url" alt="">
+                                        <img src="{{product.picture.url}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{product.name}}</h6>
-                                        <span>${{product.discounted_price}}</span>
+                                        <s class="text-muted">Rs.{{product.price}} </s>
+                                        <span>Rs.{{product.discounted_price}}</span>
                                     </div>
                                 </a>
                                 {% endfor %}

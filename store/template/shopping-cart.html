@@ -31,14 +31,15 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
-                        <table>
-                            <thead>
+                        <table class="table">
+                            <thead class="thead-dark">
                             <tr>
                                 <th class="shoping__product">Products</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
-                                <th></th>
+                                <th> Action</th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -63,7 +64,7 @@
                                 </td>
                                 <td class="shoping__cart__item__close">
                                     <a href="{% url 'remove_from_cart' cart.slug %}"> <span
-                                            class="icon_close"></span></a>
+                                            class="fa fa-trash text-danger"></span></a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -89,8 +90,8 @@
                         <div class="shoping__discount">
                             <h5>Discount Codes</h5>
                             <form action="#">
-                                <input type="text" placeholder="Enter your coupon code">
-                                <button type="submit" class="site-btn">APPLY COUPON</button>
+                                <input class="form-control" type="text" placeholder="Enter your coupon code">
+                                <button type="submit" class="site-btn mt-2">APPLY COUPON</button>
                             </form>
                         </div>
                     </div>
@@ -99,8 +100,16 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span>$454.98</span></li>
-                            <li>Total <span>$454.98</span></li>
+                            <li>Subtotal <span>Rs.{{request.session.total_cart_price}}</span></li>
+
+                            {% if request.session.total_cart_price > 0 %}
+                                {% if request.session.total_cart_price < 99 %}
+                                <li class="text-success"> Free Shipping </li>
+                                {% else %}
+                                <li>Shipping <span>Rs.99</span></li>
+                                {% endif %}
+                            <li>Total <span>Rs.{{request.session.total_cart_price|add:99.00}}</span></li>
+                            {% endif %}
                         </ul>
                         <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
