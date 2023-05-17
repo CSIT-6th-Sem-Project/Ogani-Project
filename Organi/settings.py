@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     # User Account Settings App
     'account_settings',
     # Blog App
-    'blog_app'
+    'blog_app',
+    #Django share buttons app
+    'django_social_share'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # custom middleware for updating users session on every request
+    'store.custommiddleware.UpdateUserSessionMiddleWare'
 ]
 
 ROOT_URLCONF = 'Organi.urls'
