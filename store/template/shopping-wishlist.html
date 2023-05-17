@@ -24,16 +24,19 @@
  <!-- Shoping Wishlist Section Begin -->
     <section class="shoping-cart spad">
         <div class="container">
-            <div class="row">
+            <form method="POST" action="{% url 'update_wishlist' %}">
+                {% csrf_token %}
+                <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
-                        <table>
-                            <thead>
+                        <table class="table">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th class="shoping__product">Products</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
+                                    <th>Action</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -50,7 +53,7 @@
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
                                             <div class="pro-qty">
-                                                <input type="text" value="{{wlist.quantity}}">
+                                                <input type="text" name="{{wlist.slug}}" value="{{wlist.quantity}}">
                                             </div>
                                         </div>
                                     </td>
@@ -58,10 +61,10 @@
                                         Rs.{{wlist.total}}
                                     </td>
                                     <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
+                                        <a href="{% url 'remove_wishlist' wlist.slug %}">  <span class="fa fa-trash text-danger"></span></a>
                                     </td>
-                                    <td class = "shoping__cart_item">
-                                        <span class="ml-3 icon_cart_alt"></span>
+                                    <td class = "shoping__cart__item__close">
+                                       <a href="{% url 'move_single_cart' wlist.slug %}"> <span class="fa fa-cart-plus text-success"></span></a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -74,35 +77,16 @@
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
                           {% if wishlist_items.count > 1 %}
-                            <a href="#" class="ml-2 primary-btn cart-btn-left"><span class="icon_cart"></span> Add all to Cart</a>
+                            <a href="{% url 'move_all_cart' %}" class="ml-2 primary-btn cart-btn-left"><span class="icon_cart"></span> Add all to Cart</a>
                         {% endif %}
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                            Update Wishlist</a>
-
+                        <button type ="submit" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
+                            Update Wishlist
+                        </button>
+                        </button>
                     </div>
                 </div>
-<!--                <div class="col-lg-6">-->
-<!--                    <div class="shoping__continue">-->
-<!--                        <div class="shoping__discount">-->
-<!--                            <h5>Discount Codes</h5>-->
-<!--                            <form action="#">-->
-<!--                                <input type="text" placeholder="Enter your coupon code">-->
-<!--                                <button type="submit" class="site-btn">APPLY COUPON</button>-->
-<!--                            </form>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="col-lg-6">-->
-<!--                    <div class="shoping__checkout">-->
-<!--                        <h5>Cart Total</h5>-->
-<!--                        <ul>-->
-<!--                            <li>Subtotal <span>$454.98</span></li>-->
-<!--                            <li>Total <span>$454.98</span></li>-->
-<!--                        </ul>-->
-<!--                        <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>-->
-<!--                    </div>-->
-<!--                </div>-->
             </div>
+            </form>
         </div>
     </section>
     <!-- Shoping WishList Section End -->
