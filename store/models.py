@@ -3,6 +3,9 @@ from binascii import hexlify
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 import os
 # Create your models here.
 LABELS = (
@@ -55,9 +58,10 @@ class Category(BaseModel):
             self.slug = slugify(self.cname)
         return super(Category,self).save(*args, **kwargs)
 
+
 class Product(BaseModel):
     name = models.CharField(max_length=200)
-    price = models.FloatField()
+    price = models.FloatField(validators=[MinValueValidator(0.0)])
     picture = models.ImageField(upload_to='products')
     description = models.TextField(blank=True)
     information = models.TextField(blank=True)
@@ -65,8 +69,10 @@ class Product(BaseModel):
     labels = models.CharField(choices=LABELS,max_length=100)
     department = models.ForeignKey(Department,on_delete=models.DO_NOTHING)
     category = models.ForeignKey(Category,on_delete=models.DO_NOTHING)
-    discount = models.FloatField(default=0.0)
-    rating = models.FloatField(default=0)
+    discount = models.FloatField(default=0.0,validators=[
+        MaxValueValidator(100.0),MinValueValidator(0.0)])
+    rating = models.IntegerField(default=0,validators=[
+        MinValueValidator(0),MaxValueValidator(100)])
     stock = models.CharField(choices=STOCK,default=STOCK[0][0],max_length=100)
 
     @property
@@ -76,6 +82,8 @@ class Product(BaseModel):
             return price
         else:
             return self.price
+
+
 
     def save(self, *args, **kwargs):  # new
         rand = os.urandom(12)
@@ -89,6 +97,14 @@ class Product(BaseModel):
         return f"{self.name}"
 
 
+class Product_Images(BaseModel):
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='product_images')
+    image = models.ImageField(upload_to='products/details')
+    thumb = models.ImageField(upload_to='products/details/thumbnail')
+
+    def __str__(self):
+        return f"{self.product.name} {self.created_at}"
+
 
 class Cart(BaseModel):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -99,6 +115,7 @@ class Cart(BaseModel):
 
     def __str__(self):
         return f"{self.user.username} : {self.slug}"
+
 
     def save(self, *args, **kwargs):  # new
 
@@ -119,6 +136,7 @@ class Wishlist(BaseModel):
     items = models.ForeignKey(Product , on_delete = models.CASCADE)
     quantity = models.IntegerField(default=1)
     total = models.FloatField()
+
 
     def __str__(self):
         return f"< {self.user.username}  : {self.items.name} >"
@@ -169,5 +187,26 @@ class Blog(BaseModel):
         return super(Blog,self).save(*args, **kwargs)
 
 
+
+
+class ProductReview(BaseModel):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    rating = models.IntegerField(validators=[MaxValueValidator(5),MinValueValidator(1)])
+    review = models.TextField()
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            rand = os.urandom(32)
+            rand = hexlify(rand)
+            self.slug = slugify(self.user.username + " "+self.product.name+" "+ rand.decode())
+
+        return super(ProductReview,self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.product.name} - {self.created_at}"
 
 
