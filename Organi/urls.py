@@ -33,8 +33,13 @@ urlpatterns = [
         authentication_form=UserAuthForm,
         extra_context = view
     ), name="login"),
-    path('logout',views.LogoutView.as_view())
-    ]
+    path('logout',views.LogoutView.as_view()),
+
+    path('payment/',include('payment_app.urls')),
+
+    path('cart/',include('cart_app.urls')),
+    path('wishlist/',include(('wishlist_app.urls')))
+]
 
 
 if settings.DEBUG:
