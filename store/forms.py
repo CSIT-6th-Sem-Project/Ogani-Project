@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm,UsernameField
-
+from crispy_forms.helper import FormHelper
+from django.core import validators
 
 class UserAuthForm(AuthenticationForm):
     def __init__(self,*args,**kwargs):
@@ -13,4 +14,5 @@ class UserAuthForm(AuthenticationForm):
     password = forms.CharField(widget=forms.PasswordInput(
         attrs = {'placeholder':'password','class':'form-control'}
     ))
+
 
