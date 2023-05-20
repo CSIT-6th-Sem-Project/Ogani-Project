@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Khalti Payment {% endblock %}
+{% block content %}
+<script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
+
+
+<!-- Place this where you need payment button -->
+
+<input type="text" hidden value="{{khalti_public_key}}" id="public_key">
+<input type="text" hidden value="{{order_slug}}" id="productIdentity">
+<input type="text" hidden value="{{total_amount}}" id="total_amount">
+<!-- Place this where you need payment button -->
+<!-- Paste this code anywhere in you body tag -->
+{% csrf_token %}
+<div class="d-flex p-2 m-3 justify-content-center">
+    <div class="row">
+        <div class="col-12">
+            <img style="width:290px;height:150px" src="{% static 'img/khalti-logo.png' %}"/> <span class="h1 text text-muted">Payment Process</span>
+        </div>
+        <div class="col-12 my-2 ">
+        <button class="btn primary-btn" style="width:100%" id="payment-button">
+            <span id='spinner' class="spinner-border" style="display:none" role="status" aria-hidden="true"></span>
+                <span id="payment-btn-span"> Pay via Khalti Rs.{% widthratio total_amount 100 1 %}</span>
+        </button>
+        </div>
+        <div class="col-12">
+            <button onclick="location.href='/'" class="btn primary-btn" style="width:100%" id="payment-button-1">
+                <span id="payment-btn-span-1"> Pay Later</span>
+            </button>
+        </div>
+        <div class="col-12 mt-1">
+            <button onclick="location.href='/'" class="btn btn-danger" style="width:100%" id="payment-button-2">
+                <span id="payment-btn-span-2"> Cancel Order</span>
+            </button>
+        </div>
+    </div>
+
+</div>
+ </div>
+<script src="{% static 'js/payment.js' %}">
+
+</script>
+<!-- Paste this code anywhere in you body tag -->
+{% endblock %}

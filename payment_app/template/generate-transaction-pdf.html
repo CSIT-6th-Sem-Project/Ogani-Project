@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction Pdf</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <style>
+        .tran_text{
+            color: #7fad39;
+            }
+        .tran_text_dark{
+            color:black;
+        }
+
+
+
+        td {
+    text-align: center;
+    }
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <img class="header__logo" src="static/img/logo.png" >
+                <h2 class="text text-white pd-2" style="color:white;background-color: #7fad39;">Payment Receipt</h2>
+            </div>
+            <div class="col-12">
+                <h2 class="tran_text mt-2">Invoice to: </h2>
+            </div>
+        </div>
+        <div class="row m-2" id="row-1">
+            <div class="col-12">
+                <h5 class="tran_text">Name: <span class="tran_text_dark">{{order.first_name}} {{order.last_name}}</span></h5>
+            </div>
+
+             <div class="col-12">
+                <h5 class="tran_text">Address:  <span class="tran_text_dark">{{order.address}}</span></h5>
+            </div>
+
+             <div class="col-12">
+                <h5 class="tran_text">Contact: <span class="tran_text_dark">{{order.phone}}</span> </h5>
+            </div>
+
+
+             <div class="col-12">
+                <h5 class="tran_text">Date: <span class="tran_text_dark">{{order.created_at}}</span></h5>
+            </div>
+<h5 class="tran_text">Payment Method:  </h5>
+            <div class="col-12">
+
+                    {% if order.payment_type == "e-payment" %}
+                    <img src="static/img/khalti-logo.png" style="width:120px;height:50px;">
+                    {% else %}
+                    <img src="static/img/cod-logo.png" style="width:120px;height:100px;">
+                    {% endif %}
+
+            </div>
+            <div class="col-12">
+                <hr style="border-top:2px dashed #7fad39">
+            </div>
+            <div class="col-12">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Per Price</th>
+                        <th>total Price</th>
+                    </tr>
+                    </thead>
+                    {% for oi in ordered_items %}
+                    <tr>
+                        <td>{{oi.product.name}}</td>
+                        <td>{{oi.quantity}}</td>
+                        <td>Rs.{{oi.product.discounted_price}}</td>
+                        <td>Rs.{{oi.price}}</td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+            <div class="col-12">
+                <hr style="border-top:2px dashed #7fad39">
+            </div>
+           <div class="col-12">
+                <h5 class="tran_text">Sub total: <span class="tran_text_dark">Rs.{{total_amount}}</span> </h5>
+            </div>
+            <div class="col-12">
+                <h5 class="tran_text">Shipping: <span class="tran_text_dark">Rs.{{shipping}}</span></h5>
+            </div>
+            <div class="col-12">
+                <h5 class="tran_text">Total: <span style="color:orange">Rs.{{total_amount|add:shipping}}</span> </h5>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>
