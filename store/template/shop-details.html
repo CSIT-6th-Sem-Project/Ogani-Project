@@ -180,6 +180,15 @@
                                 </div>
                             </form>
                             {% endif %}
+
+                            {% if Reviews.count == 0 %}
+                            <div class="product__details__tab__desc shadow-sm pd-2 mb-3">
+                                <h2 class="text-center text-muted">No Reviews Provided Yet ... Give a Review</h2>
+                                {% if not request.user.is_authenticated %}
+                                <h4>Login First to Give Review.<a href="/login"> Login</a></h4>
+                                {% endif %}
+                            </div>
+                            {% else %}
                             {% for review in Reviews %}
                             <div class="product__details__tab__desc shadow-sm pd-2 mb-3">
                                 <h5><span class="fa fa-user-circle mr-2"></span> {{review.user.username}} <small><span class="fa fa-clock-o mr-1 ml-2"></span> {{review.created_at}}</small></h5>
@@ -193,6 +202,7 @@
                                 <p>{{review.review}}</p>
                             </div>
                             {% endfor %}
+                            {% endif %}
 
                         </div>
                     </div>

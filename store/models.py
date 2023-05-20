@@ -106,70 +106,9 @@ class Product_Images(BaseModel):
         return f"{self.product.name} {self.created_at}"
 
 
-class Cart(BaseModel):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
-    total = models.FloatField()
-    quantity = models.IntegerField(default=1)
-    checkout = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"{self.user.username} : {self.slug}"
 
 
-    def save(self, *args, **kwargs):  # new
 
-        if not self.slug:
-            rand = os.urandom(32)
-            rand = hexlify(rand)
-            self.slug = slugify(self.user.username+" "+rand.decode())
-
-        if self.quantity > 1:
-            self.total = self.product.discounted_price * self.quantity
-
-
-        return super(Cart,self).save(*args, **kwargs)
-
-
-class Wishlist(BaseModel):
-    user = models.ForeignKey(User,on_delete = models.CASCADE)
-    items = models.ForeignKey(Product , on_delete = models.CASCADE)
-    quantity = models.IntegerField(default=1)
-    total = models.FloatField()
-
-
-    def __str__(self):
-        return f"< {self.user.username}  : {self.items.name} >"
-
-    def save(self, *args, **kwargs):  # new
-        if not self.slug:
-            rand = os.urandom(32)
-            rand = hexlify(rand)
-            self.slug = slugify(self.user.username + " " + rand.decode())
-
-        if self.quantity > 1:
-            self.total = self.items.discounted_price * self.quantity
-
-        return super(Wishlist,self).save(*args, **kwargs)
-
-
-class Billing(BaseModel):
-    first_name = models.CharField(max_length=500)
-    last_name = models.CharField(max_length = 600)
-    email = models.EmailField(max_length=200)
-    mobile_no = models.BigIntegerField()
-    address = models.TextField()
-    country = models.CharField(max_length=500)
-    city = models.CharField(max_length=400)
-    state = models.CharField(max_length=500,blank=True)
-    zip_code = models.IntegerField()
-
-    def save(self, *args, **kwargs):  # new
-        if not self.slug:
-            rand = os.urandom(32)
-            rand = hexlify(rand)
-            self.slug = slugify(self.first_name + " " + rand.decode())
-        return super(Billing,self).save(*args, **kwargs)
 
 class Blog(BaseModel):
     user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
@@ -185,9 +124,6 @@ class Blog(BaseModel):
             rand = hexlify(rand)
             self.slug = slugify("blog "+self.user.username + " "+ rand.decode()+f" {self.id}")
         return super(Blog,self).save(*args, **kwargs)
-
-
-
 
 class ProductReview(BaseModel):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -208,5 +144,6 @@ class ProductReview(BaseModel):
 
     def __str__(self):
         return f"{self.user.username} - {self.product.name} - {self.created_at}"
+
 
 

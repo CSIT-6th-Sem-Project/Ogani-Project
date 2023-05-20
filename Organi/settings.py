@@ -44,8 +44,17 @@ INSTALLED_APPS = [
     'account_settings',
     # Blog App
     'blog_app',
-    #Django share buttons app
-    'django_social_share'
+    # Users Cart App
+    'cart_app',
+    # Users Wishlist App
+    'wishlist_app',
+    # Orders Payment , Checkout Handling App
+    'payment_app',
+
+    # Crispy Forms
+    'crispy_forms',
+    'crispy_bootstrap4',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -56,8 +65,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     # custom middleware for updating users session on every request
-    'store.custommiddleware.UpdateUserSessionMiddleWare'
+    'Organi.custommiddleware.UpdateUserSessionMiddleWare'
 ]
 
 ROOT_URLCONF = 'Organi.urls'
@@ -65,7 +75,7 @@ ROOT_URLCONF = 'Organi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['store/template','base_template'],
+        'DIRS': ['store/template','base_template','payment_app/template','cart_app/template','wishlist_app/template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,8 +89,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Organi.wsgi.application'
-
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -154,3 +162,10 @@ try:
 except Exception as e:
     pass
 
+
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+KHALTI_API_URL = "https://khalti.com/api/v2/payment/verify/"

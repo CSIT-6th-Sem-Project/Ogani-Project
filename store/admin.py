@@ -14,10 +14,4 @@ admin.site.register(Department)
 
 admin.site.register(Category,CategoryAdmin)
 
-admin.site.register(Cart)
 
-admin.site.register(Wishlist)
-
-admin.site.register(Billing)
-
-admin.site.register(Blog)
